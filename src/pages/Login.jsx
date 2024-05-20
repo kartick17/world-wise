@@ -1,10 +1,27 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './Login.module.css'
+import { useAuth } from '../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
-  // PRE-FILL FOR DEV PURPOSES
-  const [email, setEmail] = useState('jack@example.com')
-  const [password, setPassword] = useState('qwerty')
+  const navigate = useNavigate()
+  const { login, isAuthenticated } = useAuth()
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  useEffect(
+    function () {
+      if (isAuthenticated) navigate('/app')
+    },
+    [isAuthenticated]
+  )
+
+  function handleClick(e) {
+    e.preventDefault()
+
+    login(email, password)
+  }
 
   return (
     <main className={styles.login}>
@@ -30,7 +47,7 @@ export default function Login() {
         </div>
 
         <div>
-          <button>Login</button>
+          <button onClick={handleClick}>Login</button>
         </div>
       </form>
     </main>

@@ -34,8 +34,11 @@ function reducer(state, action) {
   }
 }
 
-function AuthProvider({ childern }) {
-  const [{ user, isAuthenticated }, dispatch] = useReducer()
+function AuthProvider({ children }) {
+  const [{ user, isAuthenticated }, dispatch] = useReducer(
+    reducer,
+    initialState
+  )
 
   function login(email, password) {
     if (email === USER.email && password === USER.password)
@@ -48,7 +51,7 @@ function AuthProvider({ childern }) {
 
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
-      {childern}
+      {children}
     </AuthContext.Provider>
   )
 }
@@ -57,6 +60,8 @@ function useAuth() {
   const context = useContext(AuthContext)
 
   if (!context) throw new Error('AuthContext was used outside AuthProvider')
+
+  return context
 }
 
 export { AuthProvider, useAuth }
