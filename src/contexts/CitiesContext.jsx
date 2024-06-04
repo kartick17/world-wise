@@ -1,4 +1,10 @@
-import { createContext, useEffect, useContext, useReducer } from 'react'
+import {
+  createContext,
+  useEffect,
+  useContext,
+  useReducer,
+  useCallback,
+} from 'react'
 
 const CitiesContext = createContext()
 const BASE_URL = `http://localhost:8000`
@@ -78,7 +84,7 @@ function CitiesProvider({ children }) {
     fetchCities()
   }, [])
 
-  async function getCity(id) {
+  const getCity = useCallback(async function getCity(id) {
     dispatch({ type: 'loading' })
     try {
       const res = await fetch(`${BASE_URL}/cities/${id}`)
@@ -91,7 +97,7 @@ function CitiesProvider({ children }) {
         payload: 'There was an error on loading city...',
       })
     }
-  }
+  })
 
   async function addCity(city) {
     dispatch({ type: 'loading' })
