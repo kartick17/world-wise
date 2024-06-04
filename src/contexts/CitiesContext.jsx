@@ -97,7 +97,7 @@ function CitiesProvider({ children }) {
         payload: 'There was an error on loading city...',
       })
     }
-  })
+  }, [])
 
   async function addCity(city) {
     dispatch({ type: 'loading' })
